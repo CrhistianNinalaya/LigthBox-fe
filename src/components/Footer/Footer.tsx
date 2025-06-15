@@ -99,7 +99,7 @@ const Footer = () => (
 					<li className="mb-4 text-gray-100">Libro de reclamaciones</li>
 					<Image
 						alt="Libro de reclamaciones"
-						src={'assets/svg/book-reclaimers.svg'}
+						src={'/assets/svg/book-reclaimers.svg'}
 						className="cursor-pointer hover:scale-110 transition-transform"
 						width={50}
 						height={50}
