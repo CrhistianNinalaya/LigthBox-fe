@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import Footer from '@/components/Footer/Footer'
 import Navbar from '@/components/Navbar/Navbar'
+import { TanstackQueryProvider } from '@/Providers/TanstackQuery/TanstackProvider'
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -30,7 +31,9 @@ export default function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
 			>
 				<Navbar />
-				<main className="flex-1">{children}</main>
+				<TanstackQueryProvider>
+					<main className="flex-1">{children}</main>
+				</TanstackQueryProvider>
 				<Footer />
 			</body>
 		</html>
