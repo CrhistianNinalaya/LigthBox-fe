@@ -1,20 +1,12 @@
-import BoxMovies from './components/BoxMovies/BoxMovies'
-import FilterByGender from './components/FilterByGender/FilterByGender'
+import MovieSelection from './components/MovieSelection/MovieSelection'
 import SearchBar from './components/SearchBar/SearchBar'
 
-interface BillboardViewProps {
-	genres: string[]
-}
-
-const BillboardView = ({ genres }: BillboardViewProps) => {
+const BillboardView = () => {
 	return (
 		<div className="flex flex-col justify-center">
 			<SearchBar />
 
-			<div className="flex gap-4">
-				<FilterByGender genres={genres} />
-				<BoxMovies />
-			</div>
+			<MovieSelection />
 		</div>
 	)
 }

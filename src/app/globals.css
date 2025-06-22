@@ -11,6 +11,7 @@
   --secondary-600: #f7c049;
   --accent-500: #E78B48;
   --accent-600: #e78239;
+  --accent-700: #e77a2b;
   --surface: #1f1f1f;
   --text-secondary: #b3b3b3;
 }
@@ -23,6 +24,7 @@
   --color-secondary-600: var(--secondary-600);
   --color-accent-500: var(--accent-500);
   --color-accent-600: var(--accent-600);
+  --color-accent-700: var(--accent-700);
   --color-footer-600: var(--footer-600);
   --color-surface: var(--surface);
   --color-text-secondary: var(--text-secondary);
