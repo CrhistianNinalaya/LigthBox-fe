@@ -3,6 +3,7 @@ import IsLoading from '@/components/IsLoading/IsLoading'
 import { useFetchMovies } from '@/hooks/useMovies.hook'
 import { Movie } from '@/interface/Movie'
 import Image from 'next/image'
+import Link from 'next/link'
 
 interface BoxMoviesProps {
 	selectedMovieId: number | undefined
@@ -10,6 +11,7 @@ interface BoxMoviesProps {
 
 const BoxMovies: React.FC<BoxMoviesProps> = ({ selectedMovieId }) => {
 	const { isLoading, data } = useFetchMovies(selectedMovieId)
+
 	return (
 		<div className="container">
 			{isLoading ? (
@@ -17,20 +19,20 @@ const BoxMovies: React.FC<BoxMoviesProps> = ({ selectedMovieId }) => {
 			) : (
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
 					{data?.map((pelicula: Movie) => (
-						<div
+						<Link
 							key={pelicula.idPelicula}
-							className="bg-primary-400 hover:bg-primary-500 rounded-lg shadow-lg p-4 flex flex-col items-center transition-transform duration-200 transform hover:scale-105 max-w-[230px] mx-auto gap-4"
+							href={`/billboard/${pelicula.idPelicula}`}
+							className="bg-primary-400 hover:bg-primary-500 rounded-lg shadow-lg p-4 flex flex-col items-center transition-transform duration-200 transform hover:scale-105 max-w-[230px] mx-auto gap-4 cursor-pointer"
 						>
 							<Image
-								width={150}
-								height={220}
+								width={190}
+								height={250}
 								src={pelicula?.rutaImagen}
 								alt={pelicula?.titulo ?? 'Imagen de la película'}
-								className="object-cover h-[220px] w-[150px]"
+								className="w-full h-auto rounded-lg mb-2 object-cover aspect-[2/3] max-h-[300px] max-w-[200px] mx-auto"
 							/>
-							<h3 className="text-lg font-semibold text-accent-900">{pelicula?.titulo}</h3>
-							<p className="text-sm text-accent-700">{pelicula?.descripcion}</p>
-						</div>
+							<h3 className="text-lg font-semibold text-accent-900 text-center">{pelicula?.titulo}</h3>
+						</Link>
 					))}
 				</div>
 			)}
