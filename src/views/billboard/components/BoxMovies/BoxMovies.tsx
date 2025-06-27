@@ -1,6 +1,6 @@
 'use client'
 import IsLoading from '@/components/IsLoading/IsLoading'
-import { useFetchMovies } from '@/hooks/useMovies.hook'
+import { useMoviesQuery } from '@/hooks/useMovies.hook'
 import { Movie } from '@/interface/Movie'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -10,13 +10,13 @@ interface BoxMoviesProps {
 }
 
 const BoxMovies: React.FC<BoxMoviesProps> = ({ selectedMovieId }) => {
-	const { isLoading, data } = useFetchMovies(selectedMovieId)
+	const { isLoading, data } = useMoviesQuery(selectedMovieId)
 
 	return (
 		<div className="container">
 			{isLoading ? (
 				<IsLoading />
-			) : (
+			) : data && Array.isArray(data) && data.length > 0 ? (
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
 					{data?.map((pelicula: Movie) => (
 						<Link
@@ -31,10 +31,14 @@ const BoxMovies: React.FC<BoxMoviesProps> = ({ selectedMovieId }) => {
 								alt={pelicula?.titulo ?? 'Imagen de la película'}
 								className="w-full h-auto rounded-lg mb-2 object-cover aspect-[2/3] max-h-[300px] max-w-[200px] mx-auto"
 							/>
-							<h3 className="text-lg font-semibold text-accent-900 text-center">{pelicula?.titulo}</h3>
+							<h3 className="text-lg font-semibold text-accent-900 text-center">
+								{pelicula?.titulo}
+							</h3>
 						</Link>
 					))}
 				</div>
+			) : (
+				<div className='flex justify-center'>No hay películas disponibles en este momento.</div>
 			)}
 		</div>
 	)
