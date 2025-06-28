@@ -1,16 +1,20 @@
 'use client'
 import IsLoading from '@/components/IsLoading/IsLoading'
 import { useMoviesQuery } from '@/hooks/useMovies.hook'
+import { useSearchBar } from '@/hooks/useSearchBar.hook'
 import { Movie } from '@/interface/Movie'
 import Image from 'next/image'
 import Link from 'next/link'
 
 interface BoxMoviesProps {
 	selectedMovieId: number | undefined
+	selectedTitle?: string
 }
 
-const BoxMovies: React.FC<BoxMoviesProps> = ({ selectedMovieId }) => {
-	const { isLoading, data } = useMoviesQuery(selectedMovieId)
+const BoxMovies: React.FC<BoxMoviesProps> = ({ selectedMovieId, selectedTitle }) => {
+	const { isLoading, data } = selectedTitle
+		? useSearchBar(selectedTitle)
+		: useMoviesQuery(selectedMovieId)
 
 	return (
 		<div className="container">
@@ -38,7 +42,7 @@ const BoxMovies: React.FC<BoxMoviesProps> = ({ selectedMovieId }) => {
 					))}
 				</div>
 			) : (
-				<div className='flex justify-center'>No hay películas disponibles en este momento.</div>
+				<div className='flex justify-center'>Pelicula no disponible</div>
 			)}
 		</div>
 	)
