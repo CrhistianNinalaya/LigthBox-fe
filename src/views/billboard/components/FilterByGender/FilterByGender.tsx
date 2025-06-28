@@ -8,7 +8,7 @@ interface FilterByGenderProps {
 	setSelectedMovieId: React.Dispatch<React.SetStateAction<number | undefined>>
 }
 
-const FilterByGender: React.FC<FilterByGenderProps> = ({ setSelectedMovieId, selectedMovieId }) => {
+const FilterByGender: React.FC<FilterByGenderProps> = ({ selectedMovieId, setSelectedMovieId }) => {
 	const { data, isLoading } = useGenres()
 	return (
 		<div className="flex gap-8">

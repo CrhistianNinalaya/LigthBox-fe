@@ -40,3 +40,5 @@ export const useFetchMovieById = (movieId: number) => {
 
   return { data, isLoading, isError };
 }
+
+
