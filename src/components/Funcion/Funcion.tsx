@@ -5,14 +5,14 @@ import { useRouter } from 'next/navigation'
 import { format } from 'date-fns'
 
 interface Props {
-  funciones: Funcion[]
+	funciones: Funcion[]
 }
 
 export const TablaFunciones = ({ funciones }: Props) => {
   const router = useRouter()
 
   const handleSeleccionar = (idFuncion: number) => {
-    router.push(`/asientos/${idFuncion}`)
+	router.push(`/funciones/${idFuncion}/asientos`)
   }
 
   const formatearFechaHora = (fecha: string) => {
