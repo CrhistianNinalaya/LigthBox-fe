@@ -7,6 +7,8 @@ interface FilterProps {
 }
 
 const FilterByLocationAndDate = ({ sedes }: FilterProps) => {
+
+	console.log('SEDES:', sedes)
 	return (
 		<Formik
 			initialValues={{ sede: '', fecha: '' }}
@@ -28,11 +30,14 @@ const FilterByLocationAndDate = ({ sedes }: FilterProps) => {
 								className="w-full border text-black bg-white border-gray-300 rounded-md px-3 py-2"
 							>
 								<option value="">Seleccione una sede</option>
-								{sedes.map((s) => (
+								{sedes.map((s, index) => {
+								console.log('Rendering option:', s)
+								return (
 									<option key={s.id} value={s.id}>
-										{s.name}
+									{s.name}
 									</option>
-								))}
+								)
+								})}
 							</Field>
 						</div>
 						<div className="flex flex-col">

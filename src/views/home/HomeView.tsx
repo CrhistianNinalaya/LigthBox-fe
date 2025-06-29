@@ -9,9 +9,7 @@ export type SedeType = {
 }
 
 export type MovieType = {
-  movieId: number
-  titulo: string
-  imagenUrl: string
+  link: string
 }
 
 export interface HomeProps {

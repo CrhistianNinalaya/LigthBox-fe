@@ -4,7 +4,12 @@ import api from '@/api/axios'
 
 const getSedesList = async () => {
 	const response = await api.get('/sede/lista')
-	return response.data
+	const rawSedes = response.data
+
+	return rawSedes.map((sede: any) => ({
+		id: sede.idCine,
+		name: sede.sede,
+	}))
 }
 
 export const useSede = () => {
