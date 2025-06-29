@@ -40,10 +40,6 @@ export const REGISTER_SCHEMA = yup.object().shape({
 		.required('Email es un campo requerido')
 		.max(30, 'Email no puede tener más de 30 caracteres'),
 	fechaNacimiento: yup.date().required('Fecha de nacimiento es un campo requerido'),
-	usuario: yup
-		.string()
-		.required('Usuario es un campo requerido')
-		.max(20, 'Usuario no puede tener más de 20 caracteres'),
 	clave: yup
 		.string()
 		.required('Clave es un campo requerido')

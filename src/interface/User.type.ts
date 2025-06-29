@@ -7,6 +7,5 @@ export type UserType = {
 	celular: string
 	correo: string
 	fechaNacimiento: string
-	usuario: string
 	clave: string
 }

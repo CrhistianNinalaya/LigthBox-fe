@@ -1,11 +1,12 @@
 import FlexContainer from '@/components/FlexContainer/FlexContainer'
 import InputPassword from '@/components/InputPassword/InputPassword'
-import { RegisterFormValues, RegisterViewProps } from '@/interface/Auth'
+import { RegisterViewProps } from '@/interface/Auth'
+import { UserType } from '@/interface/User.type'
 import { REGISTER_SCHEMA } from '@/schemas/auth.schema'
 import { Button, CircularProgress, TextField } from '@mui/material'
 import { Field, Form, Formik } from 'formik'
 
-const initialValues: RegisterFormValues = {
+const initialValues: UserType = {
 	primerNombre: '',
 	segundoNombre: '',
 	primerApellido: '',
@@ -13,8 +14,7 @@ const initialValues: RegisterFormValues = {
 	dni: '',
 	celular: '',
 	correo: '',
-	fechaNacimiento: '',
-	usuario: '',
+	fechaNacimiento: '',	
 	clave: '',
 }
 
@@ -132,16 +132,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ tabValue, setTabValue, hand
 								helperText={touched.fechaNacimiento && errors.fechaNacimiento}
 								slotProps={{ inputLabel: { shrink: true } }}
 								autoComplete="birthdate"
-							/>
-							<Field
-								as={TextField}
-								label="Usuario"
-								name="usuario"
-								value={values.usuario}
-								onChange={handleChange}
-								error={touched.usuario && errors.usuario}
-								helperText={touched.usuario && errors.usuario}
-								autoComplete="username"
 							/>
 							<InputPassword
 								value={values.clave}
