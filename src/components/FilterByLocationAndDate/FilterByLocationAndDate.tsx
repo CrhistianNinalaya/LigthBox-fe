@@ -1,17 +1,23 @@
 'use client'
 import { SedeType } from '@/views/home/HomeView'
 import { Formik, Form, Field } from 'formik'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface FilterProps {
 	sedes: SedeType[]
 }
 
 const FilterByLocationAndDate = ({ sedes }: FilterProps) => {
+	const queryClient = useQueryClient()
+
 	return (
 		<Formik
 			initialValues={{ sede: '', fecha: '' }}
-			onSubmit={(values) => {
-				console.log(values)
+			onSubmit={async (values) => {
+				const sede = values.sede
+				const fecha = values.fecha
+
+				
 			}}
 		>
 			{() => (

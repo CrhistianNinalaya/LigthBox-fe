@@ -4,14 +4,13 @@ import Image from 'next/image'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, Navigation } from 'swiper/modules'
 import { MovieType } from '@/views/home/HomeView'
-
+import type { Swiper as SwiperClass } from 'swiper'
 interface CarruselProps {
 	movies: MovieType[]
 }
 const Carrusel = ({ movies }: CarruselProps) => {
 	const [current, setCurrent] = useState(0)
-
-	const handleSlideChange = (swiper: any) => {
+	const handleSlideChange = (swiper: SwiperClass) => {
 		setCurrent(swiper.activeIndex)
 	}
 

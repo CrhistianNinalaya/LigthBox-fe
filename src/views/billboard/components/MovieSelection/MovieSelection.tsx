@@ -9,12 +9,12 @@ const MovieSelection = () => {
 	const [selectedTitle, setSelectedTitle] = useState('')
 
 	const wrappedSetSelectedTitle: React.Dispatch<React.SetStateAction<string>> = (value) => {
-		setSelectedMovieId(undefined) // limpia el género
+		setSelectedMovieId(undefined) 
 		setSelectedTitle(value)
 	}
 
 	const wrappedSetSelectedMovieId: React.Dispatch<React.SetStateAction<number | undefined>> = (value) => {
-		setSelectedTitle('') // limpia el título
+		setSelectedTitle('') 
 		setSelectedMovieId(value)
 	}
 
