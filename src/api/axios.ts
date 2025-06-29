@@ -7,5 +7,17 @@ const api = axios.create({
 		'Content-Type': 'application/json',
 	},
 })
+api.interceptors.response.use(
+	(response) => {
+		const authHeader = response.headers['authorization']
+		if (authHeader && authHeader.startsWith('Bearer ')) {
+			const token = authHeader.replace('Bearer ', '')
+			sessionStorage.setItem('authToken', token)
+		}
+
+		return response
+	},
+	(error) => Promise.reject(error)
+)
 
 export default api
