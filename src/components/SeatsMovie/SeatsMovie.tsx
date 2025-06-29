@@ -1,3 +1,8 @@
+'use client'
+import { useState } from 'react'
+import Swal from 'sweetalert2'
+import { SedeType } from '@/views/home/HomeView'
+
 const ROWS = 5
 const COLUMNS = 6
 
@@ -39,6 +44,55 @@ export const SeatsMovie: React.FC<SeatsMovieProps> = ({
 			[seat.idAsiento]: !prev[seat.idAsiento],
 		}))
 	}
+
+	const handleContinue = () => {
+	const selectedLabels = Object.entries(selectedSeats)
+		.filter(([_, selected]) => selected)
+		.map(([seatId]) => {
+			const seatIndex = seats.findIndex(
+				(seat) => seat.idAsiento.toString() === seatId
+			)
+			return getSeatLabel(seatIndex)
+		})
+		.join(', ')
+
+	const swalWithBootstrapButtons = Swal.mixin({
+		customClass: {
+			confirmButton: 'btn btn-success',
+			cancelButton: 'btn btn-danger',
+		},
+		buttonsStyling: true,
+	})
+
+	swalWithBootstrapButtons
+		.fire({
+			title: '¿Estás seguro de comprar estos asientos?',
+			text: `Asientos seleccionados: ${selectedLabels || 'ninguno'}`,
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Sí, comprar',
+			cancelButtonText: 'Cancelar',
+			reverseButtons: true,
+		})
+		.then((result) => {
+			if (result.isConfirmed) {
+				swalWithBootstrapButtons.fire({
+					title: '¡Confirmado!',
+					text: 'Tus asientos han sido reservados.',
+					icon: 'success',
+				})
+			} else if (result.dismiss === Swal.DismissReason.cancel) {
+				swalWithBootstrapButtons.fire({
+					title: 'Cancelado',
+					text: 'Tu selección no ha sido enviada.',
+					icon: 'error',
+				})
+			}
+		})
+}
+
+
+
 
 	return (
 		<div className="flex flex-col items-center justify-center text-black w-full my-4">
@@ -87,7 +141,9 @@ export const SeatsMovie: React.FC<SeatsMovieProps> = ({
 						{Object.entries(selectedSeats)
 							.filter(([_, selected]) => selected)
 							.map(([seatId]) => {
-								const seatIndex = seats?.findIndex((seat) => seat?.idAsiento?.toString() === seatId)
+								const seatIndex = seats?.findIndex(
+									(seat) => seat?.idAsiento?.toString() === seatId
+								)
 								return (
 									<span key={seatId} className="ml-2 font-bold">
 										{getSeatLabel(seatIndex)}
@@ -95,7 +151,11 @@ export const SeatsMovie: React.FC<SeatsMovieProps> = ({
 								)
 							})}
 					</div>
-					<button className="ml-auto px-4 py-2 bg-primary-400 rounded hover:bg-primary-500 transition text-secondary-500">
+					<button
+						type="button"
+						onClick={handleContinue}
+						className="ml-auto px-4 py-2 bg-primary-400 rounded hover:bg-primary-500 transition text-secondary-500"
+					>
 						Continuar
 					</button>
 				</div>
