@@ -8,10 +8,8 @@ export type SedeType = {
   name: string
 }
 
-export type MovieType = {
-  movieId: number
-  titulo: string
-  imagenUrl: string
+export type MovieType = {	
+	link: string
 }
 
 export interface HomeProps {

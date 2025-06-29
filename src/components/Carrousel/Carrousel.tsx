@@ -3,12 +3,8 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, Navigation } from 'swiper/modules'
+import { MovieType } from '@/views/home/HomeView'
 
-type MovieType = {
-	movieId: number
-	titulo: string
-	link: string
-}
 interface CarruselProps {
 	movies: MovieType[]
 }
