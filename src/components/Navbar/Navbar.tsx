@@ -33,12 +33,12 @@ const Navbar = () => {
 				<li>
 					<Dropdown>
 						<li role="menuitem">
-							<Link href="#" className="block px-4 py-2 hover:bg-blue-100 transition">
+							<Link href="/auth/login" className="block px-4 py-2 hover:bg-blue-100 transition">
 								Iniciar Sesión
 							</Link>
 						</li>
 						<li role="menuitem">
-							<Link href="#" className="block px-4 py-2 hover:bg-blue-100 transition">
+							<Link href="/auth/register" className="block px-4 py-2 hover:bg-blue-100 transition">
 								Registrarse
 							</Link>
 						</li>
