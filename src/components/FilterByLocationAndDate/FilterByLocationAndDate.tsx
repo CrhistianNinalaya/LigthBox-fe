@@ -1,70 +1,102 @@
 'use client'
 import { SedeType } from '@/views/home/HomeView'
-import { Formik, Form, Field } from 'formik'
-import { useQueryClient } from '@tanstack/react-query'
+import { Formik, Form } from 'formik'
+import { useSearchLocalDate } from '@/hooks/useSearchLocalDate.hook'
+import {
+  Button,
+  CircularProgress,
+  TextField,
+  MenuItem,
+  Typography,
+  Box,
+  Paper,
+} from '@mui/material'
 
 interface FilterProps {
-	sedes: SedeType[]
+  sedes: SedeType[]
 }
 
 const FilterByLocationAndDate = ({ sedes }: FilterProps) => {
-	const queryClient = useQueryClient()
+  const { mutateAsync, isError, error, isPending } = useSearchLocalDate()
 
-	return (
-		<Formik
-			initialValues={{ sede: '', fecha: '' }}
-			onSubmit={async (values) => {
-				const sede = values.sede
-				const fecha = values.fecha
-
-				
+  return (
+    <Formik
+      initialValues={{ sede: '', fecha: '' }}
+      onSubmit={async (values) => {
+        try {
+          const peliculas = await mutateAsync({
+            sede: values.sede,
+            localDate: values.fecha,
+          })
+          console.log('🎬 Películas filtradas:', peliculas)
+        } catch (err) {
+          console.error('❌ Error al filtrar películas:', err)
+        }
+      }}
+    >
+      {({ handleChange, values }) => (
+        <Form>
+          <Paper
+			elevation={3}
+			sx={{
+				p: 2,
+				pl: { xs: 2, md: 24 }, 
+				display: 'flex',
+				gap: 2,
+				alignItems: 'center',
+				flexWrap: 'wrap',
+				flexDirection: { xs: 'column', sm: 'row' }, 
 			}}
-		>
-			{() => (
-				<Form>
-					<div className="flex bg-primary-400 p-4 shadow-md gap-4 items-center">
-						<div className="flex flex-col">
-							<label htmlFor="sede" className="text-sm font-semibold mb-2">
-								Sede
-							</label>
-							<Field
-								as="select"
-								id="sede"
-								name="sede"
-								className="w-full border text-black bg-white border-gray-300 rounded-md px-3 py-2"
-							>
-								<option value="">Seleccione una sede</option>
-								{sedes.map((s) => (
-									<option key={s.id} value={s.id}>
-										{s.name}
-									</option>
-								))}
-							</Field>
-						</div>
-						<div className="flex flex-col">
-							<label htmlFor="fecha" className="text-sm font-semibold mb-2">
-								Fecha
-							</label>
-							<Field
-								type="date"
-								id="fecha"
-								name="fecha"
-								className="w-full border text-black bg-white border-gray-300 rounded-md px-3 py-2"
-							/>
-						</div>
-						<div className="flex">
-							<button
-								type="submit"
-								className="bg-accent-500 text-white px-6 py-2 mt-6 rounded-md shadow hover:bg-primary-700 transition"
-							>
-								Buscar
-							</button>
-						</div>
-					</div>
-				</Form>
-			)}
-		</Formik>
-	)
+			>
+            <TextField
+              select
+              name="sede"
+              label="Sede"
+              value={values.sede}
+              onChange={handleChange}
+              size="small"
+              sx={{ minWidth: 180 }}
+            >
+              <MenuItem value="">Seleccione una sede</MenuItem>
+              {sedes.map((s) => (
+                <MenuItem key={s.id} value={s.id}>
+                  {s.name}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            <TextField
+              type="date"
+              name="fecha"
+              label="Fecha"
+              value={values.fecha}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+              size="small"
+              sx={{ minWidth: 150 }}
+            />
+
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={isPending}
+              size="medium"
+              sx={{ height: 40 }}
+            >
+              {isPending ? <CircularProgress size={20} color="inherit" /> : 'Buscar'}
+            </Button>
+          </Paper>
+
+          {isError && (
+            <Typography color="error" mt={1} ml={4}>
+              Error: {(error as Error).message}
+            </Typography>
+          )}
+        </Form>
+      )}
+    </Formik>
+  )
 }
 
 export default FilterByLocationAndDate
