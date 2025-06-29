@@ -5,13 +5,13 @@ import { useSeatsQuery } from '@/hooks/useChairs.hook'
 import { use, useState } from 'react'
 
 interface Params {
-	id: string
+	functionID: string
 }
 
-const SeatsSelectionPage = ({ params }: { params: Promise<Params> }) => {
+const SeatsSelectionPagev2 = ({ params }: { params: Promise<Params> }) => {
 	const unwrappedParams = use(params)
-	const { id } = unwrappedParams
-	const { data, isLoading } = useSeatsQuery(id)
+	const { functionID } = unwrappedParams
+	const { data, isLoading } = useSeatsQuery(functionID)
 	const [selectedSeats, setSelectedSeats] = useState<Record<string, boolean>>({})
 
 	return (
@@ -31,4 +31,4 @@ const SeatsSelectionPage = ({ params }: { params: Promise<Params> }) => {
 	)
 }
 
-export default SeatsSelectionPage
+export default SeatsSelectionPagev2

@@ -1,7 +1,7 @@
 'use client'
 
 import { Movie } from '@/interface/Movie'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -16,6 +16,8 @@ const formatearFecha = (fecha: string) => {
 
 const MovieDetails = ({ movie }: Props) => {
   const router = useRouter()
+  const pathname = usePathname()
+
 
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 rounded-lg border border-gray-300 bg-white shadow-md flex flex-col md:flex-row gap-6">
@@ -38,7 +40,7 @@ const MovieDetails = ({ movie }: Props) => {
         <div className="mt-6 flex gap-4">
           <button
             className="bg-secondary-500 hover:bg-accent-700 text-black font-bold py-2 px-6 rounded"
-            onClick={() => router.push(`/funciones/${movie.idPelicula}`)}
+            onClick={() => router.push(`${pathname}/movie-functions`)}
           >
             COMPRAR
           </button>

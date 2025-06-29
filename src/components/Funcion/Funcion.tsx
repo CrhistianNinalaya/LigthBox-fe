@@ -1,7 +1,7 @@
 'use client'
 
 import { Funcion } from '@/interface/Funcion'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { format } from 'date-fns'
 
 interface Props {
@@ -9,12 +9,12 @@ interface Props {
 }
 
 export const TablaFunciones = ({ funciones }: Props) => {
-  const router = useRouter()
+	const router = useRouter()
+	const pathname = usePathname()
 
-  const handleSeleccionar = (idFuncion: number) => {
-	router.push(`/funciones/${idFuncion}/asientos`)
-  }
-
+	const handleSeleccionar = (idFuncion: number) => {
+		router.push(`${pathname}/${idFuncion}/asientos`)
+	}
   const formatearFechaHora = (fecha: string) => {
     return format(new Date(fecha), 'dd/MM/yyyy HH:mm')
   }
