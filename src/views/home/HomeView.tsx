@@ -2,14 +2,15 @@
 import Carrusel from '@/components/Carrousel/Carrousel'
 import FilterByLocationAndDate from '@/components/FilterByLocationAndDate/FilterByLocationAndDate'
 import MovieCarousel from '@/components/MovieCarousel/MovieCarousel'
+import MovieCarouselPremiere from '@/components/MovieCarouselPremiere/MovieCarouselPremiere'
 
 export type SedeType = {
   id: number
   name: string
 }
 
-export type MovieType = {	
-	link: string
+export type MovieType = {
+    link: string
 }
 
 export interface HomeProps {
@@ -23,9 +24,13 @@ const HomeView = ({ sedes, movies }: HomeProps) => {
       <FilterByLocationAndDate sedes={sedes} />
       <Carrusel movies={movies} />
       <br />
-      <div className={'px-10'}>
-        <h4 className="text-3xl font-bold text-center text-gray-800 tracking-wide mb-6">CARTELERA</h4>
+       <div className={'px-10'}>
+        <h4 className="  font-extrabold text-[60px] leading-[1.0666] font-montserrat text-[#D6D7DA] ">Cartelera</h4>
         <MovieCarousel />
+      </div>
+      <div className={'px-10'}>
+        <h4 className="  font-extrabold text-[60px] leading-[1.0666] font-montserrat text-[#D6D7DA] ">Estrenos</h4>
+        <MovieCarouselPremiere />
       </div>
     </div>
   )
