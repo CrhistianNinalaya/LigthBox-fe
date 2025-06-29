@@ -1,27 +1,22 @@
-'use client'
-
-import { useEffect, useState } from 'react'
 import { Funcion } from '@/interface/Funcion'
+import api from '@/api/axios'
+import { useQuery } from '@tanstack/react-query'
+
+const fetchFunciones = async (idPelicula: string) => {
+	const response = await api.get(`funcion?pelicula=${idPelicula}`)
+	return response.data
+}
 
 export const useFetchFunciones = (idPelicula: string) => {
-  const [funciones, setFunciones] = useState<Funcion[]>([])
-  const [loading, setLoading] = useState(true)
+	const { data, isLoading, isError } = useQuery({
+		queryKey: ['funciones', idPelicula],
+		queryFn: () => fetchFunciones(idPelicula),
+		staleTime: 1000 * 60 * 5,
+	})
 
-  useEffect(() => {
-    const fetchFunciones = async () => {
-      try {
-        const res = await fetch(`http://localhost:8080/api/funcion?pelicula=${idPelicula}`)
-        const data = await res.json()
-        setFunciones(data)
-      } catch (error) {
-        console.error('Error al obtener funciones', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchFunciones()
-  }, [idPelicula])
-
-  return { funciones, loading }
+	return {
+		funciones: (data as Funcion[]) || [],
+		loading: isLoading,
+		error: isError,
+	}
 }
