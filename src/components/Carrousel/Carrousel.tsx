@@ -17,8 +17,8 @@ const Carrusel = ({ movies }: CarruselProps) => {
 		setCurrent((prev) => (prev === movies.length - 1 ? 0 : prev + 1))
 	}
 	return (
-		<div className="relative w-full max-w-full mx-auto ">
-			<div className="overflow-hidden rounded-lg w-full h-[40vh] flex items-center justify-center">
+		<div className="relative w-4/5 max-w-full mx-auto ">
+			<div className="overflow-hidden rounded-lg w-4/5 h-[60vh] flex items-center justify-center">
 				<Image src={movies[current].link} alt={`slide-${current}`} fill priority />
 			</div>
 			<button

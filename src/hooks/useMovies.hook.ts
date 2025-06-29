@@ -22,6 +22,28 @@ export const useMoviesQuery = (genreId?: number) => {
 };
 
 
+//funcion de obtener una pelicula de estreno
+const getMoviePremiere = () =>
+  `/pelicula/estrenos` ;
+
+const fetchMoviePremiere = async () => {
+  const response = await api.get(getMoviePremiere());
+  return response.data;
+}
+
+export const useFetchMoviePremiere = () => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey:  ['moviePremiere'] ,
+    queryFn: () => fetchMoviePremiere(),
+    staleTime: 1000 * 60 * 5,
+  });
+
+  return { data, isLoading, isError };
+};
+
+
+
+
 //funcion de obtener una pelicula por id
 const getMovieId = (movieId?: number) =>
   movieId ? `/pelicula/detalle?id=${movieId}` : '/pelicula/detalle';

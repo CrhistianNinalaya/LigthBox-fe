@@ -1,19 +1,23 @@
 'use client'
 import { SedeType } from '@/views/home/HomeView'
 import { Formik, Form, Field } from 'formik'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface FilterProps {
 	sedes: SedeType[]
 }
 
 const FilterByLocationAndDate = ({ sedes }: FilterProps) => {
+	const queryClient = useQueryClient()
 
-	console.log('SEDES:', sedes)
 	return (
 		<Formik
 			initialValues={{ sede: '', fecha: '' }}
-			onSubmit={(values) => {
-				console.log(values)
+			onSubmit={async (values) => {
+				const sede = values.sede
+				const fecha = values.fecha
+
+				
 			}}
 		>
 			{() => (
@@ -30,14 +34,11 @@ const FilterByLocationAndDate = ({ sedes }: FilterProps) => {
 								className="w-full border text-black bg-white border-gray-300 rounded-md px-3 py-2"
 							>
 								<option value="">Seleccione una sede</option>
-								{sedes.map((s, index) => {
-								console.log('Rendering option:', s)
-								return (
+								{sedes.map((s) => (
 									<option key={s.id} value={s.id}>
-									{s.name}
+										{s.name}
 									</option>
-								)
-								})}
+								))}
 							</Field>
 						</div>
 						<div className="flex flex-col">

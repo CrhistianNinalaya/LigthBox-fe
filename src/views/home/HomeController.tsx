@@ -1,6 +1,7 @@
 'use client'
 import HomeView from './HomeView'
 import { useSede } from '@/hooks/useSede.hook'
+import IsLoading from '@/components/IsLoading/IsLoading'
 
 
 const MOVIES = [
@@ -12,7 +13,7 @@ const MOVIES = [
 const HomeController = () => {
 	const { data: sedes, isLoading } = useSede()
 
-  if (isLoading) return <p className="text-center mt-10">Cargando sedes...</p>
+  if (isLoading) return <IsLoading />
   if (!sedes) return <p className="text-center mt-10 text-red-600">Error cargando sedes</p>
 
   return <HomeView sedes={sedes} movies={MOVIES} />
