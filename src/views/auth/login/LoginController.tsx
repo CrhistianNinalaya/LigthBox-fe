@@ -2,18 +2,21 @@
 import LoginView from './LoginView'
 import { useLoginMutation } from '@/hooks/useLogin.hook'
 import { LoginFormValues } from '@/interface/Auth'
+import { useAuth } from '@/Providers/AuthProvider/AuthProvider'
 import { useRouter } from 'next/navigation'
 
-const LoginRegister = () => {
+const LoginController = () => {
 	const { mutate } = useLoginMutation()
 	const router = useRouter()
+	const { saveUserData } = useAuth()
 
-	const handleSubmit = async (
+	const handleSubmit = (
 		values: LoginFormValues,
 		{ setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
 	) => {
 		mutate(values, {
-			onSuccess: () => {
+			onSuccess: (response) => {
+				saveUserData(response)
 				router.push('/')
 			},
 			onSettled: () => {
@@ -24,4 +27,4 @@ const LoginRegister = () => {
 	return <LoginView handleSubmit={handleSubmit} />
 }
 
-export default LoginRegister
+export default LoginController

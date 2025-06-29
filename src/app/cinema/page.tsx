@@ -1,6 +1,7 @@
 'use client'
 import IsLoading from '@/components/IsLoading/IsLoading'
 import useQueryCinema from '@/hooks/useCinema.hook'
+import { MovieTheater } from '@/interface/MovieTheater'
 import Image from 'next/image'
 import React from 'react'
 
@@ -14,7 +15,7 @@ const AsientosPage = () => {
 			<h1 className="text-3xl font-extrabold mb-8 text-primary-500 drop-shadow">🎬 Sedes</h1>
 			<div className="bg-primary-400 shadow-2xl rounded-2xl p-8 border border-primary-500">
 				<ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-					{data.map((cine: any) => (
+					{data.map((cine: MovieTheater) => (
 						<li
 							className="flex flex-col items-center bg-primary-500 hover:bg-primary-600 transition rounded-xl shadow p-6 "
 							key={cine.idCine}

@@ -2,15 +2,18 @@
 import RegisterView from './RegisterView'
 import { useRegisterMutation } from '@/hooks/useRegister.hook'
 import { RegisterFormSubmit } from '@/interface/Auth'
+import { useAuth } from '@/Providers/AuthProvider/AuthProvider'
 import { useRouter } from 'next/navigation'
 
 const RegisterController = () => {
 	const { mutate } = useRegisterMutation()
 	const router = useRouter()
+	const { saveUserData } = useAuth()
 
 	const handleSubmit: RegisterFormSubmit = (values, { setSubmitting }) => {
 		mutate(values, {
-			onSuccess: () => {
+			onSuccess: (responseData) => {
+				saveUserData(responseData)
 				router.push('/')
 			},
 			onSettled: () => {
