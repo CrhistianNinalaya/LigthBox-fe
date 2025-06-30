@@ -1,7 +1,9 @@
 'use client'
-import { useState } from 'react'
 import Swal from 'sweetalert2'
-import { SedeType } from '@/views/home/HomeView'
+import { useQueryClient } from '@tanstack/react-query'
+import { useAuth } from '@/Providers/AuthProvider/AuthProvider'
+import { Funcion } from '@/interface/Funcion'
+import { useCompra } from '@/hooks/useCompra.hook'
 
 const ROWS = 5
 const COLUMNS = 6
@@ -13,6 +15,8 @@ type Seat = {
 }
 
 interface SeatsMovieProps {
+	idMovie: string
+	idFuncion: string
 	seats: Seat[]
 	setSelectedSeats: React.Dispatch<React.SetStateAction<Record<string, boolean>>>
 	selectedSeats: Record<string, boolean>
@@ -35,64 +39,92 @@ export const SeatsMovie: React.FC<SeatsMovieProps> = ({
 	seats,
 	setSelectedSeats,
 	selectedSeats,
+	idMovie,
+	idFuncion
 }) => {
+	const { user } = useAuth()
+	const queryClient = useQueryClient()
+	const funciones = queryClient.getQueryData(['movie', parseInt(idMovie)]) as Funcion
+	const { mutate } = useCompra()
+
+	const body = {
+		idCliente: user?.idPersona ?? 0,
+		idFuncion: parseInt(idFuncion),
+		piso: funciones?.sala?.piso ?? 1,
+		idCine: funciones?.sala?.cine?.idCine ?? 0,
+		asientosSeleccionados: Object.keys(selectedSeats).map(Number),
+	}
+	console.log(funciones)
+
 	const handleSeatClick = (seatIndex: number) => {
 		const seat = seats[seatIndex]
 		if (!seat?.disponibilidad) return
-		setSelectedSeats((prev) => ({
-			...prev,
-			[seat.idAsiento]: !prev[seat.idAsiento],
-		}))
+
+		setSelectedSeats((prev) => {
+			const newState = { ...prev }
+			if (newState[seat.idAsiento]) {
+				delete newState[seat.idAsiento]
+			} else {
+				newState[seat.idAsiento] = true
+			}
+			return newState
+		})
 	}
 
 	const handleContinue = () => {
-	const selectedLabels = Object.entries(selectedSeats)
-		.filter(([_, selected]) => selected)
-		.map(([seatId]) => {
-			const seatIndex = seats.findIndex(
-				(seat) => seat.idAsiento.toString() === seatId
-			)
-			return getSeatLabel(seatIndex)
+		const selectedLabels = Object.entries(selectedSeats)
+			.filter(([_, selected]) => selected)
+			.map(([seatId]) => {
+				const seatIndex = seats.findIndex((seat) => seat.idAsiento.toString() === seatId)
+				return getSeatLabel(seatIndex)
+			})
+			.join(', ')
+
+		const swalWithBootstrapButtons = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-success',
+				cancelButton: 'btn btn-danger',
+			},
+			buttonsStyling: true,
 		})
-		.join(', ')
 
-	const swalWithBootstrapButtons = Swal.mixin({
-		customClass: {
-			confirmButton: 'btn btn-success',
-			cancelButton: 'btn btn-danger',
-		},
-		buttonsStyling: true,
-	})
-
-	swalWithBootstrapButtons
-		.fire({
-			title: '¿Estás seguro de comprar estos asientos?',
-			text: `Asientos seleccionados: ${selectedLabels || 'ninguno'}`,
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonText: 'Sí, comprar',
-			cancelButtonText: 'Cancelar',
-			reverseButtons: true,
-		})
-		.then((result) => {
-			if (result.isConfirmed) {
-				swalWithBootstrapButtons.fire({
-					title: '¡Confirmado!',
-					text: 'Tus asientos han sido reservados.',
-					icon: 'success',
-				})
-			} else if (result.dismiss === Swal.DismissReason.cancel) {
-				swalWithBootstrapButtons.fire({
-					title: 'Cancelado',
-					text: 'Tu selección no ha sido enviada.',
-					icon: 'error',
-				})
-			}
-		})
-}
-
-
-
+		swalWithBootstrapButtons
+			.fire({
+				title: '¿Estás seguro de comprar estos asientos?',
+				text: `Asientos seleccionados: ${selectedLabels || 'ninguno'}`,
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: 'Sí, comprar',
+				cancelButtonText: 'Cancelar',
+				reverseButtons: true,
+			})
+			.then((result) => {
+				if (result.isConfirmed) {
+					mutate(body, {
+						onSuccess: (data) => {
+							swalWithBootstrapButtons.fire({
+								title: '¡Compra exitosa!',
+								text: data?.mensaje || 'Tus asientos han sido reservados.',
+								icon: 'success',
+							})
+						},
+						onError: (error: any) => {
+							swalWithBootstrapButtons.fire({
+								title: 'Error',
+								text: error?.response?.data?.mensaje || 'Hubo un problema al realizar la compra.',
+								icon: 'error',
+							})
+						},
+					})
+				} else if (result.dismiss === Swal.DismissReason.cancel) {
+					swalWithBootstrapButtons.fire({
+						title: 'Cancelado',
+						text: 'Tu selección no ha sido enviada.',
+						icon: 'error',
+					})
+				}
+			})
+	}
 
 	return (
 		<div className="flex flex-col items-center justify-center text-black w-full my-4">
@@ -141,9 +173,7 @@ export const SeatsMovie: React.FC<SeatsMovieProps> = ({
 						{Object.entries(selectedSeats)
 							.filter(([_, selected]) => selected)
 							.map(([seatId]) => {
-								const seatIndex = seats?.findIndex(
-									(seat) => seat?.idAsiento?.toString() === seatId
-								)
+								const seatIndex = seats.findIndex((seat) => seat.idAsiento.toString() === seatId)
 								return (
 									<span key={seatId} className="ml-2 font-bold">
 										{getSeatLabel(seatIndex)}

@@ -6,11 +6,13 @@ import { use, useState } from 'react'
 
 interface Params {
 	functionID: string
+	id:string
 }
 
 const SeatsSelectionPagev2 = ({ params }: { params: Promise<Params> }) => {
 	const unwrappedParams = use(params)
-	const { functionID } = unwrappedParams
+	console.log(unwrappedParams)
+	const { functionID, id} = unwrappedParams
 	const { data, isLoading } = useSeatsQuery(functionID)
 	const [selectedSeats, setSelectedSeats] = useState<Record<string, boolean>>({})
 
@@ -21,6 +23,8 @@ const SeatsSelectionPagev2 = ({ params }: { params: Promise<Params> }) => {
 			) : (
 				<>
 					<SeatsMovie
+						idMovie={id}
+						idFuncion={functionID}
 						seats={data}
 						setSelectedSeats={setSelectedSeats}
 						selectedSeats={selectedSeats}

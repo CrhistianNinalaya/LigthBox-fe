@@ -1,4 +1,5 @@
 export type UserType = {
+	idPersona:number
 	primerNombre: string
 	segundoNombre: string
 	primerApellido: string
