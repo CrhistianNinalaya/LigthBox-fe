@@ -20,4 +20,12 @@ api.interceptors.response.use(
 	(error) => Promise.reject(error)
 )
 
+api.interceptors.request.use((config) => {
+	const token = sessionStorage.getItem('authToken')
+	if (token && config.url?.includes('/compra')) {
+		config.headers['Authorization'] = `Bearer ${token}`
+	}
+	return config
+})
+
 export default api

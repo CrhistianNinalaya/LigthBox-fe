@@ -2,16 +2,18 @@ import api from '@/api/axios'
 import { useMutation } from '@tanstack/react-query'
 
 const fetchLogin = async ({ correo, clave }: { correo: string; clave: string }) => {
-	const response = await api.post('/auth/login', { correo, clave })
-	return response.data
+	return await api.post('/auth/login', { correo, clave })
 }
 
 export const useLoginMutation = () => {
 	const mutation = useMutation({
 		mutationKey: ['login'],
 		mutationFn: fetchLogin,
-		onSuccess: (data) => {
-			localStorage.setItem('user', JSON.stringify(data))
+		onSuccess: (response) => {
+			const token = response.headers['authorization']?.replace('Bearer ', '')
+			if (token) {
+				sessionStorage.setItem('authToken', token)
+			}
 		},
 	})
 

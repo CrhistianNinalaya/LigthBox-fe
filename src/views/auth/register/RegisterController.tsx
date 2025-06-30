@@ -12,8 +12,8 @@ const RegisterController = () => {
 
 	const handleSubmit: RegisterFormSubmit = (values, { setSubmitting }) => {
 		mutate(values, {
-			onSuccess: (responseData) => {
-				saveUserData(responseData)
+			onSuccess: (response) => {
+				saveUserData(response?.data)
 				router.push('/')
 			},
 			onSettled: () => {

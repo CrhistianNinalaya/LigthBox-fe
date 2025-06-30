@@ -16,7 +16,7 @@ const LoginController = () => {
 	) => {
 		mutate(values, {
 			onSuccess: (response) => {
-				saveUserData(response)
+				saveUserData(response?.data)
 				router.push('/')
 			},
 			onSettled: () => {
